@@ -1,0 +1,55 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+:root {
+    /* Modern Fintech Palette */
+    --primary-gradient: linear-gradient(135deg, #4F46E5 0%, #3B82F6 100%);
+    --primary: #4F46E5;
+    --secondary: #64748B;
+    
+    /* Status Colors */
+    --success-bg: #D1FAE5;
+    --success-text: #059669;
+    --danger-bg: #FEE2E2;
+    --danger-text: #DC2626;
+
+    /* Backgrounds */
+    --bg: #F8FAFC; /* Very light blue-gray */
+    --surface: #FFFFFF;
+    --surface-translucent: rgba(255, 255, 255, 0.85);
+    
+    /* Text */
+    --text-main: #1E293B;
+    --text-muted: #94A3B8;
+
+    /* UI Properties */
+    --radius-lg: 24px;
+    --radius-md: 16px;
+    --radius-sm: 12px;
+    --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    --shadow-card: 0 10px 30px -10px rgba(0, 0, 0, 0.08);
+    --shadow-float: 0 20px 25px -5px rgba(79, 70, 229, 0.4);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; -webkit-tap-highlight-color: transparent; }
+
+body {
+    background-color: var(--bg);
+    color: var(--text-main);
+    padding-bottom: 90px; /* Space for nav */
+    overflow-x: hidden;
+}
+
+/* Utility Classes */
+.hide { display: none !important; }
+.text-green { color: var(--success-text) !important; }
+.text-red { color: var(--danger-text) !important; }
+.text-gradient {
+    background: var(--primary-gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+/* Animations */
+@keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+.animate-in { animation: fadeIn 0.4s ease-out forwards; }
