@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="ne">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Mero Digital Khata Pro</title>
+    
+    <!-- Styles -->
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/layout.css">
+    <link rel="stylesheet" href="css/components.css">
+    <link rel="stylesheet" href="css/animations.css">
+    
+    <!-- Icons & Libraries -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+</head>
+<body>
+
+    <!-- NOTIFICATIONS -->
+    <div id="toast-container"></div>
+
+    <!-- HEADER -->
+    <header>
+        <div class="header-top">
+            <div>
+                <h1 id="shopNameDisplay">Mero Digital Pasal</h1>
+                <small id="nepaliDate">Loading Date...</small>
+            </div>
+            <div class="header-actions">
+                <button id="btn-search-toggle"><i class="fa-solid fa-magnifying-glass"></i></button>
+                <button onclick="window.syncApp()" class="sync-btn"><i class="fa-solid fa-cloud-arrow-up"></i></button>
+            </div>
+        </div>
+        <!-- Hidden Search Bar -->
+        <div class="search-bar-container hide" id="searchContainer">
+            <input type="text" id="searchInput" placeholder="Search customers...">
+        </div>
+    </header>
+
+    <!-- MAIN CONTENT AREA -->
+    <main id="main-content">
+        
+        <!-- DASHBOARD VIEW -->
+        <section id="view-dashboard" class="active">
+            <div class="container">
+                <div class="card balance-card">
+                    <div class="balance-item">
+                        <span>To Receive (Pauna)</span>
+                        <h2 class="text-green" id="dashReceive">Rs 0</h2>
+                    </div>
+                    <div class="vertical-divider"></div>
+                    <div class="balance-item">
+                        <span>To Pay (Tirna)</span>
+                        <h2 class="text-red" id="dashPay">Rs 0</h2>
+                    </div>
+                </div>
+
+                <!-- Charts -->
+                <div class="card chart-container">
+                    <h3>Financial Overview</h3>
+                    <canvas id="financeChart"></canvas>
+                </div>
+
+                <div class="section-title">
+                    <h3>Recent Customers</h3>
+                    <button class="btn-text" id="btn-view-all-cust">View All</button>
+                </div>
+                <div id="dashboardCustomerList"></div>
+            </div>
+        </section>
+
+        <!-- CUSTOMERS LIST VIEW -->
+        <section id="view-customers" class="hide">
+            <div class="container">
+                <div class="section-title">
+                    <h3>All Customers</h3>
+                    <span id="custCount">0</span>
+                </div>
+                <div id="fullCustomerList"></div>
+            </div>
+            <button class="fab" id="btn-add-customer"><i class="fa-solid fa-user-plus"></i></button>
+        </section>
+
+        <!-- EXPENSES VIEW -->
+        <section id="view-expenses" class="hide">
+            <div class="container">
+                <div class="card total-expense-card">
+                    <span>This Month's Expense</span>
+                    <h1 id="totalExpenses">Rs 0</h1>
+                </div>
+                <div class="section-title"><h3>History</h3></div>
+                <div id="expenseList"></div>
+            </div>
+            <button class="fab fab-dark" id="btn-add-expense"><i class="fa-solid fa-plus"></i></button>
+        </section>
+
+        <!-- SETTINGS VIEW -->
+        <section id="view-settings" class="hide">
+            <div class="container">
+                <div class="card">
+                    <h3>Shop Configuration</h3>
+                    <div class="input-group">
+                        <label>Shop Name</label>
+                        <input type="text" id="settingShopName">
+                    </div>
+                    <button class="btn-primary" id="btn-save-settings">Save Changes</button>
+                </div>
+                <div class="card">
+                    <h3>Data Management</h3>
+                    <button class="btn-outline" id="btn-backup-json"><i class="fa-solid fa-download"></i> Backup Data (JSON)</button>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- CUSTOMER DETAIL OVERLAY -->
+    <div id="detail-overlay" class="overlay-page">
+        <div class="overlay-header">
+            <button class="btn-icon" id="btn-close-detail"><i class="fa-solid fa-arrow-left"></i></button>
+            <div class="overlay-title" id="detailName">Customer Name</div>
+            <button class="btn-icon text-red" id="btn-delete-customer"><i class="fa-solid fa-trash"></i></button>
+        </div>
+        <div class="container" style="padding-top: 80px;">
+            <div class="card user-summary">
+                <div class="avatar-large" id="detailAvatar">R</div>
+                <div class="user-contact">
+                    <a href="#" id="detailPhoneLink"><i class="fa-solid fa-phone"></i> <span id="detailPhone"></span></a>
+                    <button class="btn-sm-green" id="btn-whatsapp"><i class="fa-brands fa-whatsapp"></i> Send Bill</button>
+                    <button class="btn-sm-blue" id="btn-download-pdf"><i class="fa-solid fa-file-pdf"></i> PDF</button>
+                </div>
+                <div class="net-balance" id="detailBalance">Rs 0</div>
+            </div>
+
+            <div class="action-row">
+                <button class="btn-action give" id="btn-action-give">
+                    <i class="fa-solid fa-arrow-up"></i> GAVE (Diyo)
+                </button>
+                <button class="btn-action take" id="btn-action-take">
+                    <i class="fa-solid fa-arrow-down"></i> GOT (Liyo)
+                </button>
+            </div>
+
+            <div class="transaction-list" id="transactionHistory"></div>
+        </div>
+    </div>
+
+    <!-- BOTTOM NAVIGATION -->
+    <nav class="bottom-nav">
+        <button class="nav-item active" data-target="view-dashboard">
+            <i class="fa-solid fa-chart-pie"></i><span>Home</span>
+        </button>
+        <button class="nav-item" data-target="view-customers">
+            <i class="fa-solid fa-users"></i><span>Khata</span>
+        </button>
+        <button class="nav-item" data-target="view-expenses">
+            <i class="fa-solid fa-wallet"></i><span>Exp</span>
+        </button>
+        <button class="nav-item" data-target="view-settings">
+            <i class="fa-solid fa-gear"></i><span>Set</span>
+        </button>
+    </nav>
+
+    <!-- MODALS (Simplified Structure, content injected via JS or kept minimal) -->
+    <div id="modal-generic" class="modal-backdrop">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="modalTitle">Title</h3>
+                <button class="btn-close-modal"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div id="modalBody"></div>
+            <div class="modal-footer">
+                <button class="btn-primary" id="modalActionBtn">Save</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript Modules -->
+    <script type="module" src="js/app.js"></script>
+</body>
+</html>
